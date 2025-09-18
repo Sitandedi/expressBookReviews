@@ -38,7 +38,7 @@ public_users.get('/isbn/:isbn',function (req, res) {
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
-  // Retrieve the author parameter from the request URL and send the corresponding book's details
+  // Retrieve the author parameter from the request URL 
   const author = req.params.author;
   // Create an object to store matching books with their IDs
   const booksByAuthor = {};
@@ -49,15 +49,27 @@ public_users.get('/author/:author',function (req, res) {
     }
   }
   if (Object.keys(booksByAuthor).length > 0) {
-    return res.status(200).json(booksByAuthor);
+    return res.status(200).json(res.send(JSON.stringify(booksByAuthor, null, 4)));
   }
   return res.status(404).json({message: "No books found for this author"});
 });
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  // Retrieve the title parameter from the request URL 
+  const title = req.params.title;
+  // Create an object to store matching books with their IDs
+  const booksByTitle = {};
+  // Iterate through books to find matches while preserving book IDs
+  for (let [id, book] of Object.entries(books)) {
+    if (book.title.toLowerCase() === title.toLowerCase()) {
+        booksByTitle[id] = book;
+    }
+  }
+  if (Object.keys(booksByTitle).length > 0) {
+    return res.status(200).json(res.send(JSON.stringify(booksByTitle, null, 4)));
+  }
+  return res.status(404).json({message: "No books found for this author"});
 });
 
 //  Get book review
